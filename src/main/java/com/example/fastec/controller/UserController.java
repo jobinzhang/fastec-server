@@ -2,6 +2,7 @@ package com.example.fastec.controller;
 
 import com.example.fastec.bean.User;
 import com.example.fastec.params.UserLoginParam;
+import com.example.fastec.params.UserRegisterParam;
 import com.example.fastec.service.UserService;
 import com.example.fastec.response.ResponseResult;
 import org.slf4j.Logger;
@@ -9,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-
 
 @RestController
 @RequestMapping("/user")
@@ -25,5 +25,12 @@ public class UserController {
         User user = userService.login(userLoginParam);
         return ResponseResult.ok(user);
     }
+
+    @PostMapping("/register")
+    public ResponseResult register(@RequestBody UserRegisterParam userRegisterParam) throws Exception {
+        User user = userService.register(userRegisterParam);
+        return ResponseResult.ok(user);
+    }
+
 
 }
