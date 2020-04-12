@@ -8,8 +8,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import javax.annotation.Generated;
-
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.DeleteProvider;
+import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.ResultMap;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
 import org.mybatis.dynamic.sql.BasicColumn;
 import org.mybatis.dynamic.sql.delete.DeleteDSLCompleter;
@@ -28,9 +34,8 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 
 @Mapper
 public interface UserMapper {
-
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    BasicColumn[] selectList = BasicColumn.columnList(id, username, email, phone, password);
+    BasicColumn[] selectList = BasicColumn.columnList(id, name, phone, passwrod, portrait, description, sex, token, pushId, createTime, updateTime, lastReceiveMsg);
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
@@ -42,7 +47,6 @@ public interface UserMapper {
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
-    @Options(useGeneratedKeys = true, keyProperty = "record.id")
     int insert(InsertStatementProvider<User> insertStatement);
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
@@ -58,10 +62,17 @@ public interface UserMapper {
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
     @Results(id="UserResult", value = {
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
-        @Result(column="username", property="username", jdbcType=JdbcType.VARCHAR),
-        @Result(column="email", property="email", jdbcType=JdbcType.VARCHAR),
+        @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
         @Result(column="phone", property="phone", jdbcType=JdbcType.VARCHAR),
-        @Result(column="password", property="password", jdbcType=JdbcType.VARCHAR)
+        @Result(column="passwrod", property="passwrod", jdbcType=JdbcType.VARCHAR),
+        @Result(column="portrait", property="portrait", jdbcType=JdbcType.VARCHAR),
+        @Result(column="description", property="description", jdbcType=JdbcType.VARCHAR),
+        @Result(column="sex", property="sex", jdbcType=JdbcType.INTEGER),
+        @Result(column="token", property="token", jdbcType=JdbcType.VARCHAR),
+        @Result(column="push_id", property="pushId", jdbcType=JdbcType.VARCHAR),
+        @Result(column="create_time", property="createTime", jdbcType=JdbcType.BIGINT),
+        @Result(column="update_time", property="updateTime", jdbcType=JdbcType.BIGINT),
+        @Result(column="last_receive_msg", property="lastReceiveMsg", jdbcType=JdbcType.BIGINT)
     })
     List<User> selectMany(SelectStatementProvider selectStatement);
 
@@ -90,10 +101,17 @@ public interface UserMapper {
     default int insert(User record) {
         return MyBatis3Utils.insert(this::insert, record, user, c ->
             c.map(id).toProperty("id")
-            .map(username).toProperty("username")
-            .map(email).toProperty("email")
+            .map(name).toProperty("name")
             .map(phone).toProperty("phone")
-            .map(password).toProperty("password")
+            .map(passwrod).toProperty("passwrod")
+            .map(portrait).toProperty("portrait")
+            .map(description).toProperty("description")
+            .map(sex).toProperty("sex")
+            .map(token).toProperty("token")
+            .map(pushId).toProperty("pushId")
+            .map(createTime).toProperty("createTime")
+            .map(updateTime).toProperty("updateTime")
+            .map(lastReceiveMsg).toProperty("lastReceiveMsg")
         );
     }
 
@@ -101,10 +119,17 @@ public interface UserMapper {
     default int insertMultiple(Collection<User> records) {
         return MyBatis3Utils.insertMultiple(this::insertMultiple, records, user, c ->
             c.map(id).toProperty("id")
-            .map(username).toProperty("username")
-            .map(email).toProperty("email")
+            .map(name).toProperty("name")
             .map(phone).toProperty("phone")
-            .map(password).toProperty("password")
+            .map(passwrod).toProperty("passwrod")
+            .map(portrait).toProperty("portrait")
+            .map(description).toProperty("description")
+            .map(sex).toProperty("sex")
+            .map(token).toProperty("token")
+            .map(pushId).toProperty("pushId")
+            .map(createTime).toProperty("createTime")
+            .map(updateTime).toProperty("updateTime")
+            .map(lastReceiveMsg).toProperty("lastReceiveMsg")
         );
     }
 
@@ -112,10 +137,17 @@ public interface UserMapper {
     default int insertSelective(User record) {
         return MyBatis3Utils.insert(this::insert, record, user, c ->
             c.map(id).toPropertyWhenPresent("id", record::getId)
-            .map(username).toPropertyWhenPresent("username", record::getUsername)
-            .map(email).toPropertyWhenPresent("email", record::getEmail)
+            .map(name).toPropertyWhenPresent("name", record::getName)
             .map(phone).toPropertyWhenPresent("phone", record::getPhone)
-            .map(password).toPropertyWhenPresent("password", record::getPassword)
+            .map(passwrod).toPropertyWhenPresent("passwrod", record::getPasswrod)
+            .map(portrait).toPropertyWhenPresent("portrait", record::getPortrait)
+            .map(description).toPropertyWhenPresent("description", record::getDescription)
+            .map(sex).toPropertyWhenPresent("sex", record::getSex)
+            .map(token).toPropertyWhenPresent("token", record::getToken)
+            .map(pushId).toPropertyWhenPresent("pushId", record::getPushId)
+            .map(createTime).toPropertyWhenPresent("createTime", record::getCreateTime)
+            .map(updateTime).toPropertyWhenPresent("updateTime", record::getUpdateTime)
+            .map(lastReceiveMsg).toPropertyWhenPresent("lastReceiveMsg", record::getLastReceiveMsg)
         );
     }
 
@@ -149,28 +181,49 @@ public interface UserMapper {
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     static UpdateDSL<UpdateModel> updateAllColumns(User record, UpdateDSL<UpdateModel> dsl) {
         return dsl.set(id).equalTo(record::getId)
-                .set(username).equalTo(record::getUsername)
-                .set(email).equalTo(record::getEmail)
+                .set(name).equalTo(record::getName)
                 .set(phone).equalTo(record::getPhone)
-                .set(password).equalTo(record::getPassword);
+                .set(passwrod).equalTo(record::getPasswrod)
+                .set(portrait).equalTo(record::getPortrait)
+                .set(description).equalTo(record::getDescription)
+                .set(sex).equalTo(record::getSex)
+                .set(token).equalTo(record::getToken)
+                .set(pushId).equalTo(record::getPushId)
+                .set(createTime).equalTo(record::getCreateTime)
+                .set(updateTime).equalTo(record::getUpdateTime)
+                .set(lastReceiveMsg).equalTo(record::getLastReceiveMsg);
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     static UpdateDSL<UpdateModel> updateSelectiveColumns(User record, UpdateDSL<UpdateModel> dsl) {
         return dsl.set(id).equalToWhenPresent(record::getId)
-                .set(username).equalToWhenPresent(record::getUsername)
-                .set(email).equalToWhenPresent(record::getEmail)
+                .set(name).equalToWhenPresent(record::getName)
                 .set(phone).equalToWhenPresent(record::getPhone)
-                .set(password).equalToWhenPresent(record::getPassword);
+                .set(passwrod).equalToWhenPresent(record::getPasswrod)
+                .set(portrait).equalToWhenPresent(record::getPortrait)
+                .set(description).equalToWhenPresent(record::getDescription)
+                .set(sex).equalToWhenPresent(record::getSex)
+                .set(token).equalToWhenPresent(record::getToken)
+                .set(pushId).equalToWhenPresent(record::getPushId)
+                .set(createTime).equalToWhenPresent(record::getCreateTime)
+                .set(updateTime).equalToWhenPresent(record::getUpdateTime)
+                .set(lastReceiveMsg).equalToWhenPresent(record::getLastReceiveMsg);
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     default int updateByPrimaryKey(User record) {
         return update(c ->
-            c.set(username).equalTo(record::getUsername)
-            .set(email).equalTo(record::getEmail)
+            c.set(name).equalTo(record::getName)
             .set(phone).equalTo(record::getPhone)
-            .set(password).equalTo(record::getPassword)
+            .set(passwrod).equalTo(record::getPasswrod)
+            .set(portrait).equalTo(record::getPortrait)
+            .set(description).equalTo(record::getDescription)
+            .set(sex).equalTo(record::getSex)
+            .set(token).equalTo(record::getToken)
+            .set(pushId).equalTo(record::getPushId)
+            .set(createTime).equalTo(record::getCreateTime)
+            .set(updateTime).equalTo(record::getUpdateTime)
+            .set(lastReceiveMsg).equalTo(record::getLastReceiveMsg)
             .where(id, isEqualTo(record::getId))
         );
     }
@@ -178,10 +231,17 @@ public interface UserMapper {
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     default int updateByPrimaryKeySelective(User record) {
         return update(c ->
-            c.set(username).equalToWhenPresent(record::getUsername)
-            .set(email).equalToWhenPresent(record::getEmail)
+            c.set(name).equalToWhenPresent(record::getName)
             .set(phone).equalToWhenPresent(record::getPhone)
-            .set(password).equalToWhenPresent(record::getPassword)
+            .set(passwrod).equalToWhenPresent(record::getPasswrod)
+            .set(portrait).equalToWhenPresent(record::getPortrait)
+            .set(description).equalToWhenPresent(record::getDescription)
+            .set(sex).equalToWhenPresent(record::getSex)
+            .set(token).equalToWhenPresent(record::getToken)
+            .set(pushId).equalToWhenPresent(record::getPushId)
+            .set(createTime).equalToWhenPresent(record::getCreateTime)
+            .set(updateTime).equalToWhenPresent(record::getUpdateTime)
+            .set(lastReceiveMsg).equalToWhenPresent(record::getLastReceiveMsg)
             .where(id, isEqualTo(record::getId))
         );
     }

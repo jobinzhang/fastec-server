@@ -24,6 +24,7 @@
         <!-- mapper类生成-->
         <javaClientGenerator targetPackage="com.example.fastec.mapper" targetProject="src/main/java"/>
         <!-- 生成的表-->
-        <table tableName="user" />
+        <table tableName="t_user" domainObjectName="User"/>
+        <table tableName="t_user_follow" domainObjectName="UserFollow"/>
     </context>
 </generatorConfiguration>

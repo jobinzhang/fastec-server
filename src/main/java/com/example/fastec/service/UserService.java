@@ -1,28 +1,28 @@
 package com.example.fastec.service;
 
 import com.example.fastec.bean.User;
-import com.example.fastec.mapper.UserDynamicSqlSupport;
 import com.example.fastec.mapper.UserMapper;
-import com.example.fastec.params.UserLoginParam;
-import com.example.fastec.params.UserRegisterParam;
-import com.example.fastec.util.ConvertUtil;
-import org.mybatis.dynamic.sql.insert.render.InsertStatementProvider;
+
 import org.mybatis.dynamic.sql.render.RenderingStrategies;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import java.util.List;
 
 import static com.example.fastec.mapper.UserDynamicSqlSupport.*;
-import static org.mybatis.dynamic.sql.SqlBuilder.*;
+import static org.mybatis.dynamic.sql.SqlBuilder.isLike;
+import static org.mybatis.dynamic.sql.SqlBuilder.select;
+
 
 @Service
 public class UserService {
 
-    @Resource
+    @Autowired(required = false)
     private UserMapper userMapper;
 
-    public User login(UserLoginParam userParam) {
+
+    /*public User login(UserLoginParam userParam) {
         SelectStatementProvider provider = select(id, username, email, phone, password).
                 from(user).
                 where(username, isEqualTo(userParam.getUsername())).
@@ -57,5 +57,17 @@ public class UserService {
                 .render(RenderingStrategies.MYBATIS3);
         userMapper.insert(insertStatement);
         return user;
+    }*/
+
+    public User getUserByUid(int uid) {
+        return userMapper.selectByPrimaryKey(uid).orElse(null);
+    }
+
+    public List<User> searchUserByName(String queryString) {
+        SelectStatementProvider ssp = select(id, name, phone, passwrod, portrait, description, sex, token, pushId, createTime, updateTime, lastReceiveMsg).
+                from(user).where(name, isLike(queryString)).
+                build().render(RenderingStrategies.MYBATIS3);
+        List<User> users = userMapper.selectMany(ssp);
+        return users;
     }
 }
